@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: bitly-service
+    env: docker
+    plan: free
+    region: india
+    dockerfilePath: Dockerfile
+    buildCommand: "mvnw clean package -DskipTests"
+    startCommand: "java -jar target/*.jar"
