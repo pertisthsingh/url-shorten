@@ -3,7 +3,7 @@ services:
     name: bitly-service
     env: docker
     plan: free
-    region: india
+    region: oregon  # or frankfurt, singapore, etc.
     dockerfilePath: Dockerfile
     buildCommand: "mvnw clean package -DskipTests"
     startCommand: "java -jar target/*.jar"
