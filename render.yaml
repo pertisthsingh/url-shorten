@@ -4,6 +4,6 @@ services:
     env: docker
     plan: free
     region: oregon  # or frankfurt, singapore, etc.
-    dockerfilePath: Dockerfile
-    buildCommand: "mvnw clean package -DskipTests"
+    dockerfilePath: ./Dockerfile
+    buildCommand: "./mvnw clean package -DskipTests"
     startCommand: "java -jar target/*.jar"
