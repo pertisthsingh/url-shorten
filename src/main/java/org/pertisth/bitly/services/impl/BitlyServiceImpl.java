@@ -2,6 +2,7 @@ package org.pertisth.bitly.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.pertisth.bitly.dto.UrlCheckResponse;
 import org.pertisth.bitly.models.BitlyModel;
 import org.pertisth.bitly.repository.BitlyRepo;
 import org.pertisth.bitly.services.BitlyService;
@@ -52,5 +53,11 @@ public class BitlyServiceImpl implements BitlyService {
     @Override
     public String generateShortId() {
         return RandomStringUtils.randomAlphanumeric(6).toLowerCase();
+    }
+
+    @Override
+    public UrlCheckResponse checkIfUrlAlreadyShortened(String originalUrl) {
+        Optional<BitlyModel> urlMapping = repository.findByOriginalUrl(originalUrl);
+        return urlMapping.map(bitlyModel -> new UrlCheckResponse(true, bitlyModel.getShortUrl())).orElseGet(() -> new UrlCheckResponse(false, null));
     }
 }

@@ -2,6 +2,7 @@ package org.pertisth.bitly.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import org.pertisth.bitly.dto.UrlCheckResponse;
 import org.pertisth.bitly.models.ShortenUrlRequest;
 import org.pertisth.bitly.models.ShortenUrlResponse;
 import org.pertisth.bitly.services.BitlyService;
@@ -27,7 +28,13 @@ public class BitlyController {
         if (originalUrl == null || originalUrl.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Original URL is required"));
         }
+
         String normalizedUrl = originalUrl.matches("^https?://.*") ? originalUrl : "http://" + originalUrl;
+        UrlCheckResponse urlCheckResponse = bitlyService.checkIfUrlAlreadyShortened(normalizedUrl);
+        if(urlCheckResponse.isExists()) {
+            return ResponseEntity.ok(urlCheckResponse);
+        }
+
         String shortUrl = bitlyService.shortenUrl(normalizedUrl);
         ShortenUrlResponse response = new ShortenUrlResponse(shortUrl);
         return ResponseEntity.ok(response);
