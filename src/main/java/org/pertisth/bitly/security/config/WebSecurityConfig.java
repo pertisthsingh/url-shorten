@@ -27,7 +27,7 @@ public class WebSecurityConfig {
                 request.requestMatchers("/auth/**","/{shorturl}").permitAll()
                         .anyRequest().authenticated());
         http.formLogin(formLogin->formLogin.disable());
-        http.httpBasic(Customizer.withDefaults());
+        http.httpBasic(basic -> basic.disable());
         http.sessionManagement(sessionManagement-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -1,10 +1,10 @@
 package org.pertisth.bitly.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.pertisth.bitly.dto.Error;
 import org.pertisth.bitly.dto.RegisterDto;
 import org.pertisth.bitly.models.User;
 import org.pertisth.bitly.services.UserService;
-import org.pertisth.bitly.services.impl.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,17 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
 
     private final UserService userService;
-    private final AuthService authService;
-
-    public AuthenticationController(UserService userService,AuthService authService) {
-        this.userService = userService;
-        this.authService = authService;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
@@ -45,6 +40,6 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
-        return ResponseEntity.ok(authService.login(user));
+        return ResponseEntity.ok(userService.login(user));
     }
 }
