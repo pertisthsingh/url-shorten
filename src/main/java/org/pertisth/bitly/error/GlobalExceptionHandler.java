@@ -43,4 +43,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiError("Internal Server Error" , HttpStatus.INTERNAL_SERVER_ERROR));
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiError> handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiError(ex.getMessage(), HttpStatus.UNAUTHORIZED));
+    }
 }

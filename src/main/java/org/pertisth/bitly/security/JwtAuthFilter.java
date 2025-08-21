@@ -33,8 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
             final String authorizationHeader = request.getHeader("Authorization");
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-                filterChain.doFilter(request, response);
-                return;
+                throw new RuntimeException("Please provide a valid access token");
             }
 
             String token = authorizationHeader.split("Bearer ")[1];
@@ -42,6 +41,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 User user = userRepository.getUsersByUsername(username);
+                if (user == null) {
+                    throw new RuntimeException("Please provide valid token");
+                }
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
